@@ -1,5 +1,4 @@
 --!strict
-const media = require("@vara/media")
 
 --[=[
     @class ShapeLib
@@ -8,6 +7,17 @@ const media = require("@vara/media")
 ]=]
 const module = {}
 
+--[=[
+    @within ShapeLib
+    @method circle
+    @param image The image to draw to.
+    @param center The centerpoint of the circle.
+    @param radius The radius of the circle.
+    @param base_colour The colour of the circle.
+    @param fill Whether to fill in the circle.
+
+    Draws a circle onto an image that can be optionally filled in.
+]=]
 function module.circle(image: Image, center: vector, radius: number, base_colour: Colour4, fill: boolean?)
 	fill = if fill ~= nil then fill else false
 
