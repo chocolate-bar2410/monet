@@ -5,16 +5,10 @@ const colour = require("@vara/colour")
 const fs = require("@vara/fs")
 
 local base = colour.FromHex("6495ED")
-local scale = 0.05
 
-local image = monet.image.fromLambda(
-	512,
-	512,
-	function(x: number, y: number): Colour4
-		local value = math.map(math.noise(x * scale, y * scale), -1, 1, 0, 1)
+local image = monet.image.fromColour(512,512, base)
 
-		return base * colour.New(value, value, value)
-	end
-)
+monet.shape.circle(image,vector.create(256,256),135,colour.New(0,0,0),true)
+monet.shape.circle(image,vector.create(256,256),128,colour.New(1,1,1),true)
 
 fs.File("sandbox/test.png"):Write(image:Encode("PNG"))

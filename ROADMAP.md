@@ -2,8 +2,8 @@
 
 ## v0.1.0
 - [ ] image generation
-    - [ ] fill from colour
-    - [ ] fill from map
+    - [x] fill from colour
+    - [x] fill from map
 - [ ] basic shapes
     - [ ] dot
     - [ ] line
