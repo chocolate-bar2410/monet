@@ -1,0 +1,11 @@
+[package]
+name = "chocolatebar2410/monet"
+version = "0.1.0"
+description = "Generative art library for vara runtime"
+authors = ["chocolate-bar2410"]
+repository = "https://github.com/chocolate-bar2410/monet"
+license = "MIT"
+
+[target]
+environment = "luau"
+main = "src/init.luau"
