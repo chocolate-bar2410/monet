@@ -9,3 +9,7 @@ license = "MIT"
 [target]
 environment = "luau"
 main = "src/init.luau"
+
+[tools]
+vara = "chocolate-bar2410/vara@0.3.0"
+larvae = "larvae-luau/larvae@0.11.0"
