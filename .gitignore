@@ -2,3 +2,4 @@ packages/
 .ember-patch/
 .larvae/
 dist/
+.vscode
