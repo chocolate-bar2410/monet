@@ -35,7 +35,6 @@ end
 
 type lambda_fn = (x: number, y: number) -> Colour4
 
-
 --[=[
     @within ImageLib
     @method fromLambda
