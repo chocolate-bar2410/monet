@@ -1,9 +1,11 @@
 --!strict
+local fbm = require("@self/fbm")
+
 --[=[
     @class NoiseLib
 
     Submodule for creating composable noise functions using monet.
 ]=]
 return {
-    fractalBrownianNoise = require("@self/fbm")
+    fractalBrownian = fbm.fractalBrownian
 }
