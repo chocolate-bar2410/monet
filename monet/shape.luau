@@ -59,4 +59,41 @@ function module.circle(image: Image, center: vector, radius: number, base_colour
 	end
 end
 
+--[=[
+    @within ShapeLib
+    @method rect
+    @param image The image to draw to.
+    @param position The position of the top left corner.
+    @param size The size of the rectangle.
+    @param base_colour The colour of the rectangle.
+    @param fill Whether to fill in the rectangle.
+
+    Draws a rectangle onto an image that can be optionally filled in.
+]=]
+function module.rect(image: Image, position: vector,size: vector, base_colour: Colour4, fill: boolean?)
+	fill = if fill ~= nil then fill else false
+
+	local x_goal = position.x + size.x
+	local y_goal = position.y + size.y
+
+	if fill then
+		for y = position.y, y_goal do
+			for x = position.x, x_goal do
+				image:SetPixel(x, y, base_colour)
+			end
+		end
+	else
+		for x = position.x, x_goal do
+			image:SetPixel(x, position.y, base_colour)
+			image:SetPixel(x, y_goal, base_colour)
+		end
+		
+		for y = position.y, y_goal do
+			image:SetPixel(position.x, y, base_colour)
+			image:SetPixel(x_goal, y, base_colour)
+		end
+
+	end
+end
+
 return module

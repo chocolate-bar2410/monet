@@ -6,9 +6,9 @@ const fs = require("@vara/fs")
 
 local base = colour.FromHex("6495ED")
 
-local image = monet.image.fromColour(512,512, base)
+local image = monet.image.fromColour(128,128, base)
 
-monet.shape.circle(image,vector.create(256,256),135,colour.New(0,0,0),true)
-monet.shape.circle(image,vector.create(256,256),128,colour.New(1,1,1),true)
+monet.shape.rect(image,vector.create(32, 32),vector.create(64,64),colour.New(1,1,1),true)
+monet.shape.rect(image,vector.create(32, 32),vector.create(64,64),colour.New(0,0,0),false)
 
 fs.File("sandbox/test.png"):Write(image:Encode("PNG"))
