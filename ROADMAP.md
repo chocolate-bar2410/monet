@@ -11,7 +11,7 @@
 - [ ] noise
     - [x] fractal brownian noise
     - [x] billow noise
-    - [ ] domain warp
+    - [x] domain warp
     - [ ] simplex noise
     - [ ] blue noise
 - [ ] spatial

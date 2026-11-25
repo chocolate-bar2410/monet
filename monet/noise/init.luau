@@ -8,5 +8,6 @@ local fbm = require("@self/fbm")
 ]=]
 return {
     fractalBrownian = fbm.fractalBrownian,
-    billow = fbm.billow
+    billow = fbm.billow,
+    domainWarp = require("@self/domain_warp")
 }

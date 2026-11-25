@@ -1,20 +1,26 @@
---!strict
 const monet = require("@monet")
 const colour = require("@vara/colour")
 const fs = require("@vara/fs")
 
-local scale = 150
+local scale = 100
 local seed = 123456
 
-local noise_fn = function(x: number,y: number)
+local base_noise = monet.noise.fractalBrownian(function(x: number, y: number): Colour4
     local value = math.noise(x / scale,y / scale,seed)
 
     return colour.New(value,value,value)
-end
+end,4,2,0.5)
 
-noise_fn = monet.noise.billow(noise_fn,4,2,0.5)
+local warp_noise = monet.noise.fractalBrownian(function(x: number, y: number): Colour4
+    local value = math.noise(x / scale,y / scale,seed + 100)
 
-local image = monet.image.fromLambda(512, 512, noise_fn)
+    return colour.New(value,value,value)
+end,4,2,0.5)
+
+local layer1 = monet.noise.domainWarp(base_noise, warp_noise, 25)
+local layer2 = monet.noise.domainWarp(base_noise, layer1, 50)
+
+local image = monet.image.fromLambda(512, 512, layer2)
     :Add(monet.image.fromColour(512, 512, colour.New(0.5,0.5,0.5)))
     :HdrTonemap({Filter= "ACES",Exposure = -2})
 
