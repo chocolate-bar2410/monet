@@ -9,7 +9,9 @@ const colour = require("@vara/colour")
 const module = {}
 
 local function draw_composite(image: Image, x: number, y: number, coverage: number, base_colour: Colour4)
-	if x >= image.Width or y >= image.Height then return end
+	if x >= image.Width or y >= image.Height then
+		return
+	end
 
 	local previous_top = image:GetPixel(x, y)
 
@@ -33,7 +35,6 @@ local function draw_composite(image: Image, x: number, y: number, coverage: numb
 	image:SetPixel(x, y, result)
 end
 
-
 --[=[
     @within ShapeLib
     @method circle
@@ -52,7 +53,6 @@ function module.circle(image: Image, center: vector, radius: number, base_colour
 	local y = -radius
 
 	while x < -y do
-
 		if x ^ 2 + (y + 0.5) ^ 2 > radius * radius then
 			y += 1
 		end
@@ -60,7 +60,7 @@ function module.circle(image: Image, center: vector, radius: number, base_colour
 		local y_mid = y + 0.5
 
 		local distance = math.sqrt(x ^ 2 + y_mid ^ 2)
-		local intensity = math.clamp(radius - distance + 0.5,0,1)
+		local intensity = math.clamp(radius - distance + 0.5, 0, 1)
 
 		if fill then
 			for i = center.x + y, center.x - y do
@@ -73,7 +73,6 @@ function module.circle(image: Image, center: vector, radius: number, base_colour
 				draw_composite(image, i, center.y + y, 1, base_colour)
 			end
 		else
-
 			draw_composite(image, center.x + x, center.y + y, intensity, base_colour)
 			draw_composite(image, center.x - x, center.y + y, intensity, base_colour)
 			draw_composite(image, center.x + x, center.y - y, intensity, base_colour)
@@ -85,7 +84,7 @@ function module.circle(image: Image, center: vector, radius: number, base_colour
 			draw_composite(image, center.x - y, center.y - x, intensity, base_colour)
 
 			local inner_dist = vector.magnitude(vector.create(x, y + 1))
-			local inner_intensity = math.clamp(1 - math.abs(inner_dist - radius),0,1)
+			local inner_intensity = math.clamp(1 - math.abs(inner_dist - radius), 0, 1)
 
 			draw_composite(image, center.x + x, center.y + y + 1, inner_intensity, base_colour)
 			draw_composite(image, center.x - x, center.y + y + 1, inner_intensity, base_colour)
@@ -99,7 +98,7 @@ function module.circle(image: Image, center: vector, radius: number, base_colour
 		end
 
 		local outer_dist = vector.magnitude(vector.create(x, y - 1))
-		local outer_intensity = math.clamp(1 - math.abs(outer_dist - radius),0,1)
+		local outer_intensity = math.clamp(1 - math.abs(outer_dist - radius), 0, 1)
 
 		draw_composite(image, center.x + x, center.y + y - 1, outer_intensity, base_colour)
 		draw_composite(image, center.x - x, center.y + y - 1, outer_intensity, base_colour)
