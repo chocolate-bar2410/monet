@@ -5,7 +5,6 @@
     - [x] fill from colour
     - [x] fill from map
 - [ ] basic shapes
-    - [ ] dot
-    - [ ] line
-    - [ ] rectangle
-    - [ ] circle
+    - [x] line
+    - [x] rectangle
+    - [x] circle
