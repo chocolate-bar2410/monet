@@ -9,7 +9,8 @@
     - [x] rectangle
     - [x] circle
 - [ ] noise
-    - [ ] fractal brownian noise
+    - [x] fractal brownian noise
+    - [x] billow noise
     - [ ] domain warp
     - [ ] simplex noise
     - [ ] blue noise

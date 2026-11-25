@@ -25,7 +25,33 @@ module.fractalBrownian = function(noise_lambda: noise_fn,octaves: number,lacunar
 
         return result / colour.New(total_amplitude,total_amplitude,total_amplitude)
     end
-	
+
+end
+
+module.billow = function(noise_lambda: noise_fn,octaves: number,lacunarity: number,persistence: number) : noise_fn
+
+    return function(x: number,y: number)
+        local frequency = 1
+        local amplitude = 0.5
+
+        local total_amplitude = 0
+
+        local result = colour.New(0,0,0)
+
+        for octave = 1, octaves do
+            local octave_result = noise_lambda(x * frequency,y * frequency)
+            local absolute = colour.New(math.abs(octave_result.Red), math.abs(octave_result.Green), math.abs(octave_result.Blue))
+
+            result += colour.New(amplitude,amplitude,amplitude) * absolute
+            total_amplitude += amplitude
+
+            frequency *= lacunarity
+            amplitude *= persistence
+        end
+
+        return result / colour.New(total_amplitude,total_amplitude,total_amplitude)
+    end
+
 end
 
 return module

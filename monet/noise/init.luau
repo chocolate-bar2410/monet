@@ -7,5 +7,6 @@ local fbm = require("@self/fbm")
     Submodule for creating composable noise functions using monet.
 ]=]
 return {
-    fractalBrownian = fbm.fractalBrownian
+    fractalBrownian = fbm.fractalBrownian,
+    billow = fbm.billow
 }

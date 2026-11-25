@@ -12,7 +12,7 @@ local noise_fn = function(x: number,y: number)
     return colour.New(value,value,value)
 end
 
-noise_fn = monet.noise.fractalBrownian(noise_fn,5,2,0.5)
+noise_fn = monet.noise.billow(noise_fn,4,2,0.5)
 
 local image = monet.image.fromLambda(512, 512, noise_fn)
     :Add(monet.image.fromColour(512, 512, colour.New(0.5,0.5,0.5)))
