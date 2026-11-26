@@ -5,6 +5,17 @@ type noise_fn = (x: number, y: number) -> Colour4
 
 local module = {}
 
+--[=[
+    @within NoiseLib
+	@method fractalBrownian
+	@param noise_lambda The noise function being used.
+	@param octaves The ammount of noise layers summed.
+	@param lacunarity Scales the sampling frequency of each octave.
+	@param persistence How much to scale each octave's contribution.
+	@return noise function
+
+	Create a function that applys fractal brownian noise using the provided noise function.
+]=]
 module.fractalBrownian = function(noise_lambda: noise_fn, octaves: number, lacunarity: number, persistence: number): noise_fn
 	return function(x: number, y: number)
 		local frequency = 1
@@ -26,6 +37,17 @@ module.fractalBrownian = function(noise_lambda: noise_fn, octaves: number, lacun
 	end
 end
 
+--[=[
+    @within NoiseLib
+	@method billow
+	@param noise_lambda The noise function being used.
+	@param octaves The ammount of noise layers summed.
+	@param lacunarity Scales the sampling frequency of each octave.
+	@param persistence How much to scale each octave's contribution.
+	@return noise function
+
+	Create a function that applys billow noise using the provided noise function.
+]=]
 module.billow = function(noise_lambda: noise_fn, octaves: number, lacunarity: number, persistence: number): noise_fn
 	return function(x: number, y: number)
 		local frequency = 1

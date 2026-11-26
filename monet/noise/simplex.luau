@@ -47,6 +47,16 @@ local function hash(x: number, y: number, seed: number): number
 	return PERM_TABLE[bit32.band(i + PERM_TABLE[j + 1], 0xFF) + 1] % 8 + 1
 end
 
+--[=[
+    @within NoiseLib
+	@method simplex
+	@param x
+	@param y
+	@param seed
+	@return colour
+
+	Samples a simplex noise value.
+]=]
 return function(x: number, y: number, seed: number?): Colour4
 	seed = seed or 0
 	local position = vector.create(x, y)
