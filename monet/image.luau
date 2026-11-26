@@ -60,7 +60,7 @@ end
 
 --[=[
     @within ImageLib
-    @method fromColour
+    @method fromGradient
     @param width
     @param height
     @param colour_0
@@ -68,7 +68,7 @@ end
     @param position_0
     @param position_1
 
-    Creates a width x height image with a linear gradient.
+    Creates a width x height image using a linear gradient.
 ]=]
 function module.fromGradient(
 	width: number,
@@ -103,7 +103,53 @@ function module.fromGradient(
 			end
 
 			t = (vx * difference.x + vy * difference.y) / (distance ^ 2)
-            t = math.clamp(t,0,1)
+			t = math.clamp(t, 0, 1)
+
+			local hue = (hue_0 + t * delta + 360) % 360
+			if math.isnan(hue) then
+				hue = 0
+			end
+
+			local result = colour.FromOKLCH(
+				math.lerp(lightness_0, lightness_1, t),
+				math.lerp(chroma_0, chroma_1, t),
+				hue,
+				math.lerp(colour_0.Alpha, colour_1.Alpha, t)
+			)
+
+			return result
+		end
+	)
+end
+
+--[=[
+    @within ImageLib
+    @method fromGradient
+    @param width
+    @param height
+    @param colour_0
+    @param colour_1
+    @param radial
+
+    Creates a width x height image using a radial gradient.
+]=]
+function module.fromRadialGradient(width: number, height: number, colour_0: Colour4, colour_1: Colour4, radius: number)
+	local lightness_0, chroma_0, hue_0 = colour_0:ToOKLCH()
+	local lightness_1, chroma_1, hue_1 = colour_1:ToOKLCH()
+
+	local delta = ((hue_1 - hue_0 + 540) % 360) - 180
+
+	return module.fromLambda(
+		width,
+		height,
+		function(x: number, y: number): Colour4
+			local distance = math.sqrt((x - width // 2) ^ 2 + (y - height // 2) ^ 2)
+
+			local t = math.clamp(distance / radius, 0, 1)
+
+			if distance < 1e-6 then
+				return colour_0
+			end
 
 			local hue = (hue_0 + t * delta + 360) % 360
 			if math.isnan(hue) then
