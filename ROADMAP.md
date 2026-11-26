@@ -5,7 +5,7 @@
     - [x] fill from colour
     - [x] fill from map
     - [ ] radial gradient
-    - [ ] linear gradient
+    - [x] linear gradient
 - [x] basic shapes
     - [x] line
     - [x] rectangle

@@ -1,4 +1,5 @@
 --!strict
+const colour = require("@vara/colour")
 const media = require("@vara/media")
 
 --[=[
@@ -55,6 +56,70 @@ function module.fromLambda(width: number, height: number, lambda: lambda_fn)
 	end
 
 	return image
+end
+
+--[=[
+    @within ImageLib
+    @method fromColour
+    @param width
+    @param height
+    @param colour_0
+    @param colour_1
+    @param position_0
+    @param position_1
+
+    Creates a width x height image with a linear gradient.
+]=]
+function module.fromGradient(
+	width: number,
+	height: number,
+	colour_0: Colour4,
+	colour_1: Colour4,
+	position_0: vector?,
+	position_1: vector?
+)
+	position_0 = position_0 or vector.create(width // 2, 0)
+	position_1 = position_1 or vector.create(width // 2, height - 1)
+
+	local difference = position_1 - position_0
+	local distance = vector.magnitude(difference)
+
+	local lightness_0, chroma_0, hue_0 = colour_0:ToOKLCH()
+	local lightness_1, chroma_1, hue_1 = colour_1:ToOKLCH()
+
+	local delta = ((hue_1 - hue_0 + 540) % 360) - 180
+
+	return module.fromLambda(
+		width,
+		height,
+		function(x: number, y: number): Colour4
+			local vx = x - (position_0 :: vector).x
+			local vy = y - (position_0 :: vector).y
+
+			local t = 0
+
+			if distance < 1e-6 then
+				return colour_0
+			end
+
+			t = (vx * difference.x + vy * difference.y) / (distance ^ 2)
+            t = math.clamp(t,0,1)
+
+			local hue = (hue_0 + t * delta + 360) % 360
+			if math.isnan(hue) then
+				hue = 0
+			end
+
+			local result = colour.FromOKLCH(
+				math.lerp(lightness_0, lightness_1, t),
+				math.lerp(chroma_0, chroma_1, t),
+				hue,
+				math.lerp(colour_0.Alpha, colour_1.Alpha, t)
+			)
+
+			return result
+		end
+	)
 end
 
 return module
