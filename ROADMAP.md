@@ -4,17 +4,22 @@
 - [x] image generation
     - [x] fill from colour
     - [x] fill from map
+    - [ ] radial gradient
+    - [ ] linear gradient
 - [x] basic shapes
     - [x] line
     - [x] rectangle
     - [x] circle
+    - [ ] polyline
 - [ ] noise
     - [x] fractal brownian noise
     - [x] billow noise
     - [x] domain warp
     - [x] simplex noise
-    - [ ] blue noise
 - [ ] spatial
     - [ ] voronoi noise
     - [ ] poission disk sample
     - [ ] phyllotaxis
+- [ ] palletes
+    - [ ] cosine gradient
+    - [ ] colour ramps
