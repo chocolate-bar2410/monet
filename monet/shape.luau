@@ -13,6 +13,10 @@ local function draw_composite(image: Image, x: number, y: number, coverage: numb
 		return
 	end
 
+	if x < 0 or y < 0 then
+		return
+	end
+
 	local previous_top = image:GetPixel(x, y)
 
 	local source_alpha = base_colour.Alpha * coverage
