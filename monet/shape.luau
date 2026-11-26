@@ -201,4 +201,14 @@ function module.line(image: Image, position: vector, goal: vector, line_colour: 
 	end
 end
 
+function module.polyline(image: Image, positions: { vector }, line_colour: Colour4)
+	if #positions == 0 then
+		return
+	end
+
+	for i = 1, #positions - 1 do
+		module.line(image, positions[i], positions[i + 1], line_colour)
+	end
+end
+
 return module

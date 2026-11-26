@@ -10,7 +10,7 @@
     - [x] line
     - [x] rectangle
     - [x] circle
-    - [ ] polyline
+    - [x] polyline
 - [ ] noise
     - [x] fractal brownian noise
     - [x] billow noise
