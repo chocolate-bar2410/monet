@@ -4,7 +4,7 @@
 - [x] image generation
     - [x] fill from colour
     - [x] fill from map
-    - [ ] radial gradient
+    - [x] radial gradient
     - [x] linear gradient
 - [x] basic shapes
     - [x] line
@@ -18,7 +18,7 @@
     - [x] simplex noise
 - [ ] spatial
     - [ ] voronoi noise
-    - [ ] poission disk sample
+    - [x] poission disk sample
     - [ ] phyllotaxis
 - [ ] palletes
     - [ ] cosine gradient
