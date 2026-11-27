@@ -7,4 +7,5 @@
 ]=]
 return {
 	poisson = require("@self/poisson"),
+    phyllotaxis = require("@self/phyllotaxis"),
 }

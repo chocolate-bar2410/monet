@@ -9,12 +9,12 @@ local image = monet.image.fromColour(
 	colour.New(0.02,0.02,0.02)
 )
 
-local radius = 30
+local radius = 10
 
-local points = monet.spatial.poisson(vector.create(512,512),radius,1)
+local points = monet.spatial.phyllotaxis(256,256,0.5)
 
 for _,v in points do
-    v = vector.floor(v)
+    v = vector.floor(v) + vector.create(256,256)
 
     monet.shape.circle(image, v, radius // 2, colour.New(1,1,1),true)
 end
