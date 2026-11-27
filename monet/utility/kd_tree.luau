@@ -51,55 +51,58 @@ local function build_tree(points: {vector},depth: number?): types.KdNode?
     )
 end
 
-local function search_closest(root: types.KdNode,value: vector)
+local function search_closest(root: types.KdNode?,value: vector,best: vector?,best_distance: number): (vector?,number)
     
+    if root == nil then
+        return best,best_distance
+    end
+
     local difference = root.value - value
     local distance2 = vector.dot(difference, difference)
 
-    local left
-    local right
+    if distance2 < best_distance then
+        best = root.value
+        best_distance = distance2
+    end
 
+    local axis_difference
     
-    if root.left == nil and root.right == nil then
-        return root.value
+    if root.axis == 0 then
+        axis_difference = value.x - root.value.x
+    else
+        axis_difference = value.y - root.value.y
     end
 
-    local closest = root.value
-    local closest_distance = distance2
+    local near
+    local far
 
-    if root.left then
-        left = search_closest(root.left, value)
-        local left_dist2 = vector.dot(left - value,left - value)
-
-        if left_dist2 < distance2 then
-            closest = left
-            closest_distance = left_dist2
-        end
-
+    if axis_difference < 0 then
+        near = root.left
+        far = root.right
+    else
+        near = root.right
+        far = root.left
     end
 
-    if root.right then
-        right = search_closest(root.right, value)
-        local right_dist2 = vector.dot(right - value,right - value)
+    best,best_distance = search_closest(near, value, best, best_distance)
 
-        if right_dist2 < closest_distance then
-            closest = right
-            closest_distance = right_dist2
-        end
+    if axis_difference * axis_difference < best_distance then
+        best, best_distance = search_closest(far, value, best, best_distance)
     end
 
-    return closest
+    return best,best_distance
 end
 
 function interface.new(points: {vector})
 	local tree = {}
-	tree.root = build_tree(points)
+	tree.root = build_tree(points) :: types.KdNode
 
 	return setmetatable(tree, meta)
 end
 
-function schema.closest(self: types.KdTree,index: vector) 
-    return search_closest(self.root, index)
+function schema.closest(self: types.KdTree,index: vector): vector
+    local closest = search_closest(self.root, index, nil, math.huge)
+    return closest :: vector
 end
 
 return interface

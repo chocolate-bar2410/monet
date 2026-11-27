@@ -16,7 +16,7 @@
     - [x] billow noise
     - [x] domain warp
     - [x] simplex noise
-    - [ ] voronoi noise
+    - [x] voronoi noise
     - [ ] worley noise
 - [ ] spatial
     - [x] poission disk sample

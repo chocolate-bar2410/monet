@@ -1,5 +1,7 @@
 --!strict
 local colour = require("@vara/colour")
+local kd_tree = require("../utility/kd_tree")
+
 const module = {}
 
 local function hash21(x: number, y: number, seed: number)
@@ -16,8 +18,10 @@ local function hash21(x: number, y: number, seed: number)
     return ((p3x + p3y) * p3z) % 1
 end
 
-function module.voronoi(points: {vector},num_values: number,seed: number): (x: number, y: number) -> Colour4
+function module.voronoi(points: {vector},num_values: number,seed: number?): (x: number, y: number) -> Colour4
     assert(num_values > 1, "there must be atleast 2 or more values to create voronoi noise")
+
+    seed = seed or 0
 
     local values = {}
     for i = 1,num_values do
@@ -30,24 +34,13 @@ function module.voronoi(points: {vector},num_values: number,seed: number): (x: n
         local index = (hash21(point.x, point.y, seed) * num_values) // 1 + 1
         greymap[point] = values[index]
     end
+
+    local point_tree = kd_tree.new(points)
     
     return function(x: number,y: number)
 
-        local closest = nil
-        local closest_distance2 = math.huge
-
-        local position = vector.create(x, y)
-
-        for i,point in points do
-            local difference = position - point
-            local distance2 = vector.dot(difference,difference)
-            
-            if distance2 < closest_distance2 then
-                closest = point
-                closest_distance2 = distance2
-            end
-        end
-
+        local closest = point_tree:closest(vector.create(x, y))
+        
         if closest == nil then
             return colour.New(1,1,1)
         end
