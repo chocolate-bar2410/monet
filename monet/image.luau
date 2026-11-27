@@ -1,5 +1,4 @@
 --!strict
-const colour = require("@vara/colour")
 const media = require("@vara/media")
 
 --[=[
@@ -84,11 +83,6 @@ function module.fromGradient(
 	local difference = position_1 - position_0
 	local distance = vector.magnitude(difference)
 
-	local lightness_0, chroma_0, hue_0 = colour_0:ToOKLCH()
-	local lightness_1, chroma_1, hue_1 = colour_1:ToOKLCH()
-
-	local delta = ((hue_1 - hue_0 + 540) % 360) - 180
-
 	return module.fromLambda(
 		width,
 		height,
@@ -105,17 +99,7 @@ function module.fromGradient(
 			t = (vx * difference.x + vy * difference.y) / (distance ^ 2)
 			t = math.clamp(t, 0, 1)
 
-			local hue = (hue_0 + t * delta + 360) % 360
-			if math.isnan(hue) then
-				hue = 0
-			end
-
-			local result = colour.FromOKLCH(
-				math.lerp(lightness_0, lightness_1, t),
-				math.lerp(chroma_0, chroma_1, t),
-				hue,
-				math.lerp(colour_0.Alpha, colour_1.Alpha, t)
-			)
+			local result = colour_0:Clone():OKLCHMix(colour_1, t)
 
 			return result
 		end
@@ -134,11 +118,6 @@ end
     Creates a width x height image using a radial gradient.
 ]=]
 function module.fromRadialGradient(width: number, height: number, colour_0: Colour4, colour_1: Colour4, radius: number)
-	local lightness_0, chroma_0, hue_0 = colour_0:ToOKLCH()
-	local lightness_1, chroma_1, hue_1 = colour_1:ToOKLCH()
-
-	local delta = ((hue_1 - hue_0 + 540) % 360) - 180
-
 	return module.fromLambda(
 		width,
 		height,
@@ -151,17 +130,7 @@ function module.fromRadialGradient(width: number, height: number, colour_0: Colo
 				return colour_0
 			end
 
-			local hue = (hue_0 + t * delta + 360) % 360
-			if math.isnan(hue) then
-				hue = 0
-			end
-
-			local result = colour.FromOKLCH(
-				math.lerp(lightness_0, lightness_1, t),
-				math.lerp(chroma_0, chroma_1, t),
-				hue,
-				math.lerp(colour_0.Alpha, colour_1.Alpha, t)
-			)
+			local result = colour_0:Clone():OKLCHMix(colour_1, t)
 
 			return result
 		end
