@@ -16,10 +16,11 @@
     - [x] billow noise
     - [x] domain warp
     - [x] simplex noise
-- [ ] spatial
     - [ ] voronoi noise
+    - [ ] worley noise
+- [ ] spatial
     - [x] poission disk sample
-    - [ ] phyllotaxis
+    - [x] phyllotaxis
 - [ ] palletes
     - [ ] cosine gradient
     - [ ] colour ramps

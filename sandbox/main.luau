@@ -3,20 +3,16 @@ const monet = require("@monet")
 const colour = require("@vara/colour")
 const fs = require("@vara/fs")
 
-local image = monet.image.fromColour(
+local points = {
+	vector.create(128,128),
+	vector.create(348,348),
+}
+
+
+local image = monet.image.fromLambda(
 	512,
 	512,
-	colour.New(0.02,0.02,0.02)
+	monet.noise.voronoi(points,4)
 )
-
-local radius = 10
-
-local points = monet.spatial.phyllotaxis(256,256,0.5)
-
-for _,v in points do
-    v = vector.floor(v) + vector.create(256,256)
-
-    monet.shape.circle(image, v, radius // 2, colour.New(1,1,1),true)
-end
 
 fs.File("sandbox/test.png"):Write(image:Encode("PNG"))
