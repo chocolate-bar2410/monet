@@ -1,6 +1,6 @@
 {
   "aliases": {
-    "vara": "~/.vara/.typedefs/0.3.0/api",
+    "vara": "~/.vara/.typedefs/0.3.1/api",
     "monet": "monet"
   }
 }
