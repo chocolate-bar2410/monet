@@ -1,11 +1,11 @@
 --!strict
+local types = require("../types")
+
 local interface = {}
 local schema = {}
 local meta = { __index = schema }
 
-type node = { left: node?, right: node?, value: vector,axis: number }
-
-local function createNode(left: node?, right: node?, value: vector,axis: number): node
+local function createNode(left: types.KdNode?, right: types.KdNode?, value: vector,axis: number): types.KdNode
 	return {
 		left = left,
 		right = right,
@@ -14,7 +14,7 @@ local function createNode(left: node?, right: node?, value: vector,axis: number)
 	}
 end
 
-local function build_tree(points: {vector},depth: number?): node?
+local function build_tree(points: {vector},depth: number?): types.KdNode?
     if #points == 0 then
         return nil
     end
@@ -51,6 +51,46 @@ local function build_tree(points: {vector},depth: number?): node?
     )
 end
 
+local function search_closest(root: types.KdNode,value: vector)
+    
+    local difference = root.value - value
+    local distance2 = vector.dot(difference, difference)
+
+    local left
+    local right
+
+    
+    if root.left == nil and root.right == nil then
+        return root.value
+    end
+
+    local closest = root.value
+    local closest_distance = distance2
+
+    if root.left then
+        left = search_closest(root.left, value)
+        local left_dist2 = vector.dot(left - value,left - value)
+
+        if left_dist2 < distance2 then
+            closest = left
+            closest_distance = left_dist2
+        end
+
+    end
+
+    if root.right then
+        right = search_closest(root.right, value)
+        local right_dist2 = vector.dot(right - value,right - value)
+
+        if right_dist2 < closest_distance then
+            closest = right
+            closest_distance = right_dist2
+        end
+    end
+
+    return closest
+end
+
 function interface.new(points: {vector})
 	local tree = {}
 	tree.root = build_tree(points)
@@ -58,6 +98,8 @@ function interface.new(points: {vector})
 	return setmetatable(tree, meta)
 end
 
-function schema.closest(index: vector) end
+function schema.closest(self: types.KdTree,index: vector) 
+    return search_closest(self.root, index)
+end
 
 return interface

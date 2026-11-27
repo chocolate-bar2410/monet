@@ -6,18 +6,10 @@ const fs = require("@vara/fs")
 
 local points = monet.spatial.poisson(vector.create(512,512), 40)
 
-
-local tree = kd_tree.new(points)
-print(tree)
-
-
---[[
 local image = monet.image.fromLambda(
 	512,
 	512,
 	monet.noise.voronoi(points,10,12)
 )
 
-
 fs.File("sandbox/test.png"):Write(image:Encode("PNG"))
-]]
