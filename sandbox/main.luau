@@ -11,7 +11,7 @@ local image = monet.image.fromColour(
 
 local radius = 30
 
-local points = monet.spatial.poisson(vector.create(512,512),radius)
+local points = monet.spatial.poisson(vector.create(512,512),radius,1)
 
 for _,v in points do
     v = vector.floor(v)

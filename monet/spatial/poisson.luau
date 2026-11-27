@@ -1,6 +1,8 @@
 --!strict
+const random_util = require("../utility/random")
 
 const MAX_ATTEMPTS = 30
+const RNG_MAX = 2 ^ 32
 
 local function is_valid(candidate: vector, bounds: vector, radius: number, points: { vector }, grid: { { number } }): boolean
 	if candidate.x >= bounds.x or candidate.y >= bounds.y or candidate.x < 0 or candidate.y < 0 then
@@ -40,7 +42,17 @@ local function is_valid(candidate: vector, bounds: vector, radius: number, point
 	return true
 end
 
-return function(bounds: vector, radius: number): { vector }
+--[=[
+	@within SpatialLib
+	@method poisson
+	@param bounds The size of the sampler's bounding box.
+	@param radius The minimum distance a point can be to another point.
+	@return Points.
+
+	Creates a set of points that are spaced out at a minimum distance using poisson disk sampling.
+]=]
+return function(bounds: vector, radius: number, seed: number?): { vector }
+	local rng = random_util.XOSHIRO128(seed or 0)
 	local grid: { { number } } = {}
 
 	const CELL_SIZE = radius / math.sqrt2
@@ -60,15 +72,15 @@ return function(bounds: vector, radius: number): { vector }
 	table.insert(active, bounds // 2)
 
 	while #active > 0 do
-		local spawn_index = math.random(1, #active)
+		local spawn_index = random_util.lemire_constrain(rng, 1, #active)
 		local spawn_center = active[spawn_index]
 
 		local accepted = false
 
 		for i = 1, MAX_ATTEMPTS do
-			local angle = math.random() * math.tau
+			local angle = rng() / RNG_MAX * math.tau
 			local direction = vector.create(math.sin(angle), math.cos(angle))
-			local candidate = spawn_center + direction * math.random(radius, 2 * radius)
+			local candidate = spawn_center + direction * random_util.lemire_constrain(rng, radius, 2 * radius)
 
 			if is_valid(candidate, bounds, radius, points, grid) then
 				active[#active + 1] = candidate
