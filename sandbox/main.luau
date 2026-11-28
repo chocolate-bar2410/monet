@@ -5,14 +5,14 @@ local colour = require("@vara/colour")
 const fs = require("@vara/fs")
 
 local seed = 10
-local points = {}
+local points = monet.spatial.phyllotaxis(50, 256)
 
-local tree = kd_tree.new(points)
+local tree = kd_tree.new({})
 
-tree:addPoint(vector.create(4,4))
-tree:addPoint(vector.create(5,2))
-tree:addPoint(vector.create(5,2))
-tree:addPoint(vector.create(4,0))
+for i,v in points do
+	tree:addPoint(v)
+end
+
 
 print(tree)
 

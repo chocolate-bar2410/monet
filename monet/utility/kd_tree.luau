@@ -90,9 +90,65 @@ local function search_closest(root: types.KdNode?, value: vector, best: vector?,
 	return best, best_distance
 end
 
+local function find_min(root: types.KdNode?,axis: number): types.KdNode?
+    if root == nil then return nil end
+
+    if root.axis == axis then
+        if root.left == nil then
+            return root
+        end
+
+        return find_min(root.left, axis)
+    end
+
+    local left = find_min(root.left, axis)
+    local right = find_min(root.right, axis)
+
+    local minimum = root
+
+    if left and (if axis == 0 then left.value.x < minimum.value.x else left.value.y < minimum.value.y) then
+        minimum = left
+    end
+
+    if right and (if axis == 0 then right.value.x < minimum.value.x else right.value.y < minimum.value.y) then
+        minimum = right
+    end
+
+    return minimum
+end
+
+local function delete_node(root: types.KdNode?,value : vector): types.KdNode?
+    if root == nil then return nil end
+
+    local axis = root.axis
+    local axis_difference = if axis == 0 then value.x - root.value.x else value.y - root.value.y
+
+    if root.value == value then
+        if root.left == nil then return root.right end
+        if root.right == nil then return root.left end
+
+        local successor = find_min(root.right, axis) :: types.KdNode
+        root.value = successor.value 
+        root.right = delete_node(root.right, successor.value)
+        return root
+    end
+
+
+    if axis_difference < 0 then
+        root.left = delete_node(root.left, value)
+    elseif axis_difference > 0 then
+        root.right = delete_node(root.right, value)
+    else
+        root.left = delete_node(root.left, value)
+        root.right = delete_node(root.right, value)
+    end
+
+    return root
+end
+
 function interface.new(points: { vector })
 	local tree = {}
-	tree.root = build_tree(points) :: types.KdNode
+	tree.root = build_tree(points)
 
 	return setmetatable(tree, meta)
 end
@@ -112,9 +168,9 @@ function schema.addPoint(self: types.KdTree, value: vector)
 
 	while true do
 		local axis = current.axis
-		local axis_difference = if current.axis == 0 then value.x - current.value.x else value.y - current.value.y
+		local axis_difference = if axis == 0 then value.x - current.value.x else value.y - current.value.y
 
-		if axis_difference > 0 then
+		if axis_difference < 0 then
 			if current.left == nil then
 				current.left = createNode(nil, nil, value, (axis + 1) % 2)
 				break
@@ -133,7 +189,7 @@ function schema.addPoint(self: types.KdTree, value: vector)
 end
 
 function schema.removePoint(self: types.KdTree, value: vector) 
-    
+    self.root = delete_node(self.root, value)
 end
 
 return interface
