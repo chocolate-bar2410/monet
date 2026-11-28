@@ -1,19 +1,19 @@
 --!strict
 const monet = require("@monet")
+local kd_tree = require("@monet/utility/kd_tree")
 local colour = require("@vara/colour")
 const fs = require("@vara/fs")
 
+local seed = 10
+local points = {}
 
-local points = monet.spatial.phyllotaxis(512,200,0.5)
+local tree = kd_tree.new(points)
 
-for i,v in points do
-	points[i] += vector.create(256,256)
-end
+tree:addPoint(vector.create(4,4))
+tree:addPoint(vector.create(5,2))
+tree:addPoint(vector.create(5,2))
+tree:addPoint(vector.create(4,0))
 
-local image = monet.image.fromLambda(
-	512,
-	512,
-	monet.noise.voronoi(points,10)
-)
+print(tree)
 
-fs.File("sandbox/test.png"):Write(image:Encode("PNG"))
+-- fs.File("sandbox/test.png"):Write(image:Encode("PNG"))

@@ -4,7 +4,9 @@ export type KdTree = setmetatable<{
     root: KdNode
     },{
     __index: {
-        closest: (self: KdTree, index: vector) -> vector
+        closest: (self: KdTree, index: vector) -> vector,
+        addPoint: (self: KdTree, value: vector) -> (),
+        removePoint: (self: KdTree, value: vector) -> ()
     }
 }>
 
