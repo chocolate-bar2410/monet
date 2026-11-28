@@ -5,8 +5,11 @@ const fs = require("@vara/fs")
 
 local seed = 10
 
-local tree = monet.spatial.kdTree.new(monet.spatial.phyllotaxis(50, 256))
+local points = monet.spatial.poisson(vector.create(512, 512),100,seed)
 
-print(tree)
+local tree = monet.spatial.kdTree.new(points)
 
--- fs.File("sandbox/test.png"):Write(image:Encode("PNG"))
+
+local image = monet.image.fromLambda(512,512, monet.noise.worley(tree,256,1.2))
+
+fs.File("sandbox/test.png"):Write(image:Encode("PNG"))
