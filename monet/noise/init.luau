@@ -1,6 +1,5 @@
 --!strict
 const fbm = require("@self/fbm")
-const voronoi = require("@self/voronoi")
 
 --[=[
     @class NoiseLib
@@ -12,5 +11,5 @@ return {
 	billow = fbm.billow,
 	domainWarp = require("@self/domain_warp"),
 	simplex = require("@self/simplex"),
-	voronoi = voronoi.voronoi
+	worley = require("@self/worley")
 }

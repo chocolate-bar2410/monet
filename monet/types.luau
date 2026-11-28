@@ -10,4 +10,6 @@ export type KdTree = setmetatable<{
     }
 }>
 
+export type noise_fn = (x: number, y: number) -> Colour4
+
 return nil

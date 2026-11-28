@@ -8,4 +8,5 @@
 return {
 	poisson = require("@self/poisson"),
     phyllotaxis = require("@self/phyllotaxis"),
+    kdTree = require("@self/kd_tree")
 }
